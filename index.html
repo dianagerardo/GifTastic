@@ -19,7 +19,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/prototype/1.7.1.0/prototype.js"></script>
+    <!-- <script src="//ajax.googleapis.com/ajax/libs/prototype/1.7.1.0/prototype.js"></script> -->
 
 
 </head>
@@ -40,14 +40,23 @@
         <div id="buttons-view"></div>
 
         <form id="animal-form">
-            <span id="animal">Think of an animal gif you would like to see:
-                <input id="animal-choice" type="text">
-                <!-- Buttons trigger new animal gifs -->
-                <input id="add-animal" value="Add Animal" type="submit">
-            </span>
+            <label for="animal-input">Think of an animal gif you would like to see: </label>
+            <input id="animal-input" type="text">
+            <!-- Buttons trigger new animal gifs -->
+            <input id="add-animal" value="Add Animal" type="submit">
         </form>
-
+        <!-- This is where the gif images should go -->
         <div id="animal-view"></div>
+
+        <style>
+            .close {
+                cursor: pointer;
+            }
+
+            .animal-btn {
+                padding: 1%;
+            }
+        </style>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
@@ -55,64 +64,91 @@
 </body>
 
 <script type="text/javascript">
-    // Empty array of gif topics
-    var topic = [];
+
+    const topic = [];
     // Function for displaying the gif buttons
-    function animalButtons() {
-        // Deleting the movie buttons prior to adding new movie buttons
+    const animalButtons = function () {
+        // Empty array of gif topics
+
+        // Deleting any buttons prior to adding new buttons
         // (this is necessary otherwise we will have repeat buttons)
         $("#buttons-view").empty();
 
-        // Looping through the array of movies
-        for (var i = 0; i < topic.length; i++) {
+        // Looping through the array of topics
+        for (let i = 0; i < topic.length; i++) {
             // Dynamicaly generating buttons for each animal in the array
             var newButton = $("<button>");
             // Adding a class
             newButton.addClass("animal-btn");
+
+            // <span class="close">x</span>
+
             // Adding a data-attribute with a value of the movie at index i
             newButton.attr("data-name", topic[i]);
             // Providing the button's text with a value of the movie at index i
-            newButton.text(topic[i]);
+            newButton.text(topic[i]).append($("<span class='close'> x </span>"));
             // Adding the button to the HTML
             $("#buttons-view").append(newButton);
         }
     };
 
 
-
     $("#add-animal").on("click", function (event) {
         // event.preventDefault() can be used to prevent an event's default behavior.
         // Here, it prevents the submit button from trying to submit a form when clicked
+        // alert("clicked");
         event.preventDefault();
-        // Here we grab the text from the input box
-        var animal = $("#animal-choice").val().trim();
-        // Here we construct our URL
-        var queryURL = "https://api.giphy.com/v1/gifs/random?api_key=BkaUZZWcFij6J7AoQj3WtPb1R2p9O6V9&tag=animal";
-        // Creating an AJAX call for the specific animal gif button when clicked
+        // // Here we grab the text from the input box
+        var animal = $("#animal-input").val().trim();
+        // Adding the animal search item to the array of topics
+        topic.push(animal);
+        animalButtons();
+        $("#animal-input").empty();
+
+    });
+
+
+    $(document).on("click", ".animal-btn", displayAnimals);
+
+    // Remove button when x is clicked
+    $(document).on('click', '.remove', function () {
+        // Use splice to remove an item from the array
+        topic.splice(0);
+        displayAnimals();
+    });
+
+    function displayAnimals() {
+        var animal = $(this).attr("data-name");
+
+        //     // Here we construct our URL
+        var queryURL = "https://api.giphy.com/v1/gifs/search?&q=" + animal + "&api_key=BkaUZZWcFij6J7AoQj3WtPb1R2p9O6V9&limit=10";
+        //     // Creating an AJAX call for the specific animal gif button when clicked
         $.ajax({
             url: queryURL,
             method: "GET"
         }).then(function (response) {
-            // console.log(response);
-            // $("#animal-view").text(JSON.stringify(response));
+            var results = response.data;
+            for (let j = 0; j < results.length; j++) {
+                console.log(response);
+                console.log(results);
+                // Creating a div to hold the animal gif
+                var animalDiv = $("<div>");
+                // Adding a class to the new div
+                animalDiv.addClass("animal-div");
+                // Saving the image info to a new variable
+                var imageURL = results[j].images.fixed_height.url;
+                // Creating and storing the animal image tag
+                var animalImage = $("<img>");
+                // Giving the image tag the src
+                animalImage.attr("src", imageURL);
+                animalImage.attr("alt", "animal image");
 
-            // Creating a div to hold the animal gif
-            var animalDiv = $("<div>");
-            // Adding a class to the new div
-            animalDiv.addClass("animal-div");
-            // Saving the image info to a new variable
-            var imageURL = response.data.image_original_url;
-            // Creating and storing the animal image tag
-            var animalImage = $("<img>");
-            // Giving the image tag the src
-            animalImage.attr("src", imageURL);
-            animalImage.attr("alt", "animal image");
+                animalDiv.append(animalImage);
+                $("#animal-view").prepend(animalDiv);
 
-            $("#animal-view").prepend(animalImage);
-            console.log(response);
-
+            }
         });
-    })
+    };
 
 </script>
 
