@@ -110,6 +110,24 @@
 
     $(document).on("click", ".animal-btn", displayAnimals);
 
+    $(document).on("click", ".gif", function () {
+        var state = $(this).attr("data-state");
+        // check to see whether the image state is equal to 'still'
+        if (state === "still") {
+            // then update the src attribute of this image to it's data-animate value,
+            $(this).attr("src", $(this).attr("data-animate"));
+            // and update the data-state attribute to 'animate'.
+            $(this).attr("data-state", "animate");
+
+            // If state is equal to 'animate', then update the src attribute of this
+            // image to it's data-still value and update the data-state attribute to 'still'
+        }
+        else if (state === "animate") {
+            $(this).attr("src", $(this).attr("data-still"));
+            $(this).attr("data-state", "still");
+        }
+        });
+
     // Remove button when x is clicked
     $(document).on('click', '.remove', function () {
         // Use splice to remove an item from the array
@@ -137,16 +155,25 @@
                 animalDiv.addClass("animal-div");
                 // Saving the image info to a new variable
                 var imageURL = results[j].images.fixed_height.url;
-                // Creating and storing the animal image tag
-                var animalImage = $("<img>");
-                // Giving the image tag the src
-                animalImage.attr("src", imageURL);
-                animalImage.attr("alt", "animal image");
+                var imageStillURL= results[j].images.fixed_height_still.url;
 
+                // var imageStill = ;
+
+                // var imageAnimate = ;
+                // Creating and storing the animal image tag
+                var animalImage = $("<img class='gif'>");
+                // Giving the image tag the src
+                animalImage.attr("src", imageStillURL);
+                animalImage.attr("alt", "animal image");
+                animalImage.attr("data-state", "still");
+                animalImage.attr("data-still", imageStillURL);
+                animalImage.attr("data-animate", imageURL);
+                
                 animalDiv.append(animalImage);
                 $("#animal-view").prepend(animalDiv);
 
             }
+
         });
     };
 
