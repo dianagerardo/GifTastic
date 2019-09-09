@@ -22,6 +22,8 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
     <!-- <script src="//ajax.googleapis.com/ajax/libs/prototype/1.7.1.0/prototype.js"></script> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 
 </head>
@@ -62,6 +64,7 @@
 <script type="text/javascript">
 
     const topic = [];
+    const favorites = [];
     // Function for displaying the gif buttons
     const animalButtons = function () {
         // Empty array of gif topics
@@ -81,8 +84,9 @@
 
             // Adding a data-attribute with a value of the movie at index i
             newButton.attr("data-name", topic[i]);
-            // Providing the button's text with a value of the movie at index i
-            newButton.text(topic[i]).append($("<span class='close'> x </span>"));
+            // Providing the button's text with a value of the movie at index i and adding a remove button
+            newButton.text(topic[i]).append($("<span class='fa fa-heart'></span>").append($("<i class='fa fa-close'></i>")));
+
             // Adding the button to the HTML
             $("#buttons-view").append(newButton);
         }
@@ -125,10 +129,17 @@
     });
 
     // Remove button when x is clicked
-    $(document).on('click', '.remove', function () {
+    $(document).on('click', '.fa-close', function () {
         // Use splice to remove an item from the array
         topic.splice(0);
         displayAnimals();
+    });
+    // When heart button is clicked, the gif should be added to a favorite section
+    $(document).on('click', '.fa-close', function () {
+        // Push into favorites array
+
+        // Display favorite gifs on the side
+        
     });
 
     function displayAnimals() {
@@ -143,8 +154,8 @@
         }).then(function (response) {
             var results = response.data;
             for (let j = 0; j < results.length; j++) {
-                console.log(response);
-                console.log(results);
+                // console.log(response);
+                // console.log(results);
                 // Creating a div to hold the animal gif
                 var animalDiv = $("<div>");
                 // Adding a class to the new div

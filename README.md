@@ -20,3 +20,9 @@
 7. Deploy your assignment to Github Pages.
 
 - - -
+
+# Site instructions
+
+* Input an animal's name into the search bar and click on the 'add an animal' button to add a new animal button to the page.
+* Click on the animal buttons to add 10 still gifs to the page.
+* Click on a gif to make it play, and click on it again to make it stop.
