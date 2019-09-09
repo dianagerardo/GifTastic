@@ -1,0 +1,28 @@
+body {
+    background-image: url("../images/leopard.jpg");
+}
+.jumbotron {
+    background-color: turquoise;
+    text-align: center;
+    opacity: 0.7;
+}
+.close {
+    cursor: pointer;
+}
+
+.animal-btn {
+    padding: 1%;
+}
+
+.search {
+    font-size: 34px;
+    padding-bottom: 1%;
+}
+
+label {
+    font-size: 20px;
+}
+
+.container-gif {
+    padding-left:2%;
+}

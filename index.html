@@ -7,8 +7,10 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="assets/style.css">
+    <!-- Linking reset stylesheet and external stylesheet -->
 
+    <link rel="stylesheet" href="assets/stylesheet/reset.css">
+    <link rel="stylesheet" href="assets/stylesheet/style.css">
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
@@ -27,15 +29,18 @@
 <body>
 
     <div class="jumbotron jumbotron-fluid">
-        <div class="container">
+        <div class="container-jumbo">
             <h1 class="display-4">GifTastic Fun!</h1>
-            <p class="lead">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>
+            <p class="lead">Search for an animal to display a button. Then click on the button to display animal
+                gifs.
+                <br>
+                Click on the displays to pause/start the gif.</p>
         </div>
     </div>
 
-    <div class="container">
+    <div class="container-gif">
 
-        <h1>Search animal gifs!</h1>
+        <h1 class="search">Search animal gifs!</h1>
         <!-- The animal buttons go here-->
         <div id="buttons-view"></div>
 
@@ -48,17 +53,8 @@
         <!-- This is where the gif images should go -->
         <div id="animal-view"></div>
 
-        <style>
-            .close {
-                cursor: pointer;
-            }
-
-            .animal-btn {
-                padding: 1%;
-            }
-        </style>
-
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    </div>
 
 
 </body>
@@ -126,7 +122,7 @@
             $(this).attr("src", $(this).attr("data-still"));
             $(this).attr("data-state", "still");
         }
-        });
+    });
 
     // Remove button when x is clicked
     $(document).on('click', '.remove', function () {
@@ -155,7 +151,7 @@
                 animalDiv.addClass("animal-div");
                 // Saving the image info to a new variable
                 var imageURL = results[j].images.fixed_height.url;
-                var imageStillURL= results[j].images.fixed_height_still.url;
+                var imageStillURL = results[j].images.fixed_height_still.url;
 
                 // var imageStill = ;
 
@@ -168,7 +164,7 @@
                 animalImage.attr("data-state", "still");
                 animalImage.attr("data-still", imageStillURL);
                 animalImage.attr("data-animate", imageURL);
-                
+
                 animalDiv.append(animalImage);
                 $("#animal-view").prepend(animalDiv);
 
