@@ -153,6 +153,12 @@
                 var imageURL = results[j].images.fixed_height.url;
                 var imageStillURL = results[j].images.fixed_height_still.url;
 
+                var ratingDiv = $("<div>");
+                ratingDiv.addClass("rating-div");
+                var rating = "Rating: " + results[j].rating;
+
+                ratingDiv.append(rating);
+
                 // var imageStill = ;
 
                 // var imageAnimate = ;
@@ -167,7 +173,7 @@
 
                 animalDiv.append(animalImage);
                 $("#animal-view").prepend(animalDiv);
-
+                animalDiv.prepend(ratingDiv);
             }
 
         });
